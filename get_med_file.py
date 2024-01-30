@@ -73,6 +73,8 @@ def get_platform_version(plc):
         version = "".join(test).strip()
         version = version.split(".")
         version = [int(v) for v in version]
+    else:
+        version = [0,0,0,0]
         
     return Response(None, version, status)
 

@@ -128,16 +128,19 @@ def get_med(plc):
 
     status, ret_data = plc.conn.send(request, False)
 
-    value = ret_data[52:]
-    byte_count = unpack_from("<H", value, 0)[0]
-    name_bytes = value[-byte_count:]
+    if status == 0:
+        value = ret_data[52:]
+        byte_count = unpack_from("<H", value, 0)[0]
+        name_bytes = value[-byte_count:]
 
-    count = int(byte_count/2)
-    stuff = [unpack_from("<H", name_bytes, i*2)[0] for i in range(count)]
+        count = int(byte_count/2)
+        stuff = [unpack_from("<H", name_bytes, i*2)[0] for i in range(count)]
 
-    file_name = [str(chr(c)) for c in stuff]
-    file_name = "".join(file_name).strip()
-    file_name.replace(".med", ".mer")
+        file_name = [str(chr(c)) for c in stuff]
+        file_name = "".join(file_name).strip()
+        file_name.replace(".med", ".mer")
+    else:
+        file_name = ""
 
     return Response(None, file_name, status)
 

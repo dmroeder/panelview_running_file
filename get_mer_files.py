@@ -1,6 +1,6 @@
 import pylogix
 from pylogix.lgx_response import Response
-from struct import pack
+from struct import pack, unpack, unpack_from
 
 """
 Some other data might be returned from the first packet that has to be used
@@ -151,7 +151,19 @@ def get_mers(plc):
                     0x01)
 
     status, ret_data = plc.conn.send(request, False)
-    return Response(None, None, status)
+
+    value = ret_data[52:]
+    byte_count = unpack_from("<H", value, 0)[0]
+    name_bytes = value[-byte_count:]
+
+    count = int(byte_count/2)
+    stuff = [unpack_from("<H", name_bytes, i*2)[0] for i in range(count)]
+
+    file_name = [str(chr(c)) for c in stuff]
+    file_name = "".join(file_name).strip()
+
+
+    return Response(None, file_name, status)
 
 with pylogix.PLC("192.168.1.12") as comm:
 

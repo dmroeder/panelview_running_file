@@ -4,7 +4,7 @@ from struct import pack, unpack_from
 
 """
 The goal here is to get the name of the MED file saved on a PanelView's
-\Temp\~MER.00 directory.
+\\Temp\\~MER.00 directory.
 
 This is accomplished by calling a DLL file that will list all files in the
 requested directory.  We'll put the results in an output file, request the
@@ -38,6 +38,44 @@ def pv_test(plc, s, c, data):
 
     status, ret_data = plc.conn.send(request, False)
     return Response(None, None, status)
+
+def get_platform_version(plc):
+    """ Get the terminal firmware revision
+    """
+    conn = plc.conn.connect(False)
+    if not conn[0]:
+        return Response(None, None, conn[1])
+
+    cip_service = 0x51
+    cip_service_size = 0x03
+    cip_class_type = 0x21
+    cip_class = 0x04fe
+    cip_instance_type = 0x24
+    cip_instance = 0x00
+
+    data = "HKEY_LOCAL_MACHINE\\Software\\Rockwell Software\\RSView Enterprise\\MEVersion\0"
+    data = [ord(c) for c in data]
+
+    request = pack('<BBHHBB{}B'.format(len(data)),
+                    cip_service,
+                    cip_service_size,
+                    cip_class_type,
+                    cip_class,
+                    cip_instance_type,
+                    cip_instance,
+                    *data)
+
+    status, ret_data = plc.conn.send(request, False)
+
+    if status == 0:
+        value = ret_data[52:-1]
+        test = [str(chr(v)) for v in value]
+        version = "".join(test).strip()
+        version = version.split(".")
+        version = [int(v) for v in version]
+        
+    return Response(None, version, status)
+
 
 def create_file(plc, entry):
     """
@@ -150,6 +188,10 @@ with pylogix.PLC("192.168.1.12") as comm:
     init_file = "\\Windows\\RemoteHelper.DLL\0FileBrowse\0\\Temp\\~MER.00\\*.med::\\Application Data\\Rockwell Software\\RSViewME\\Runtime\\DillyDilly.txt\0"
     file_location = "\\Application Data\\Rockwell Software\\RSViewME\\Runtime\\DillyDilly.txt\0"
     uninit_file = "\\Windows\\RemoteHelper.DLL\0DeleteRemFile\0\\Application Data\\Rockwell Software\\RSViewME\\Runtime\\DillyDilly.txt\0"
+
+
+    response = get_platform_version(comm)
+    print(response)
 
     response = pv_test(comm, 0x50, 0x04fd, init_file)
     if response.Status == "Success":

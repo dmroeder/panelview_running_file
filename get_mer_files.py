@@ -158,7 +158,7 @@ with pylogix.PLC("192.168.1.12") as comm:
     pc = "HKEY_LOCAL_MACHINE\\Software\\Rockwell Software\\RSLinxNG\\CIP Identity\\ProductCode\0"
     pt = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Rockwell Software\\RSLinxNG\\CIP Identity\\ProductType\0"
 
-    init_file = "\\Windows\\RemoteHelper.DLL\0FileBrowse\0\\Temp\\~MER.99\\Local\\*.loc::\\Application Data\\Rockwell Software\\RSViewME\\Runtime\\Dilly.txt\0"
+    init_file = "\\Windows\\RemoteHelper.DLL\0FileBrowse\0\\Temp\\~MER.00\\Local\\*.loc::\\Application Data\\Rockwell Software\\RSViewME\\Runtime\\Dilly.txt\0"
     file_location = "\\Application Data\\Rockwell Software\\RSViewME\\Runtime\\Dilly.txt\0"
     uninit_file = "\\Windows\\RemoteHelper.DLL\0DeleteRemFile\0\\Application Data\\Rockwell Software\\RSViewME\\Runtime\\Dilly.txt\0"
 

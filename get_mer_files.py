@@ -38,7 +38,7 @@ def pv_test(plc, s, c, data):
 def create_file(plc, entry):
     """
     Read multiple PowerFlex parameters
-    
+
     returns Response class (.TagName, .Value, .Status)
     """
     conn = plc.conn.connect(False)
@@ -99,7 +99,7 @@ def seems_important(plc):
 def delete_file(plc):
     """
     Read multiple PowerFlex parameters
-    
+
     returns Response class (.TagName, .Value, .Status)
     """
     conn = plc.conn.connect(False)
@@ -127,7 +127,7 @@ def delete_file(plc):
 def get_mers(plc):
     """
     Read multiple PowerFlex parameters
-    
+
     returns Response class (.TagName, .Value, .Status)
     """
     conn = plc.conn.connect(False)
@@ -161,7 +161,7 @@ def get_mers(plc):
 
     file_name = [str(chr(c)) for c in stuff]
     file_name = "".join(file_name).strip()
-
+    file_name.replace(".med", ".mer")
 
     return Response(None, file_name, status)
 

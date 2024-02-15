@@ -130,3 +130,6 @@ dmypy.json
 
 # my scratchpad file
 scratch.py
+
+# pycharm
+.idea/

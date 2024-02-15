@@ -9,7 +9,6 @@ def get_startup_mer(plc):
     configured to run at startup.  This assumes that there is one configured to load at
     startup and someone hasn't switched applications after it booted.
     """
-
     conn = plc.conn.connect(False)
     if not conn[0]:
         return Response(None, None, conn[1])
@@ -25,13 +24,13 @@ def get_startup_mer(plc):
     data = [ord(c) for c in data]
 
     request = pack('<BBHHBB{}B'.format(len(data)),
-                    cip_service,
-                    cip_service_size,
-                    cip_class_type,
-                    cip_class,
-                    cip_instance_type,
-                    cip_instance,
-                    *data)
+                   cip_service,
+                   cip_service_size,
+                   cip_class_type,
+                   cip_class,
+                   cip_instance_type,
+                   cip_instance,
+                   *data)
 
     status, ret_data = plc.conn.send(request, False)
 
@@ -39,15 +38,15 @@ def get_startup_mer(plc):
         temp = ret_data.split(b"\\")
         try:
             name = temp[-1].decode("utf-8").strip()
-        except:
+        except (Exception,):
             name = None
             status = -1
     else:
         name = None
         status = -1
-    
 
     return Response(None, name, status)
+
 
 with pylogix.PLC("192.168.1.12") as comm:
 

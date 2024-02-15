@@ -28,16 +28,17 @@ def pv_test(plc, s, c, data):
     data = [ord(c) for c in data]
 
     request = pack('<BBHHBB{}B'.format(len(data)),
-                    cip_service,
-                    cip_service_size,
-                    cip_class_type,
-                    cip_class,
-                    cip_instance_type,
-                    cip_instance,
-                    *data)
+                   cip_service,
+                   cip_service_size,
+                   cip_class_type,
+                   cip_class,
+                   cip_instance_type,
+                   cip_instance,
+                   *data)
 
     status, ret_data = plc.conn.send(request, False)
     return Response(None, None, status)
+
 
 def get_platform_version(plc):
     """ Get the terminal firmware revision
@@ -57,13 +58,13 @@ def get_platform_version(plc):
     data = [ord(c) for c in data]
 
     request = pack('<BBHHBB{}B'.format(len(data)),
-                    cip_service,
-                    cip_service_size,
-                    cip_class_type,
-                    cip_class,
-                    cip_instance_type,
-                    cip_instance,
-                    *data)
+                   cip_service,
+                   cip_service_size,
+                   cip_class_type,
+                   cip_class,
+                   cip_instance_type,
+                   cip_instance,
+                   *data)
 
     status, ret_data = plc.conn.send(request, False)
 
@@ -74,9 +75,10 @@ def get_platform_version(plc):
         version = version.split(".")
         version = [int(v) for v in version]
     else:
-        version = [0,0,0,0]
+        version = [0, 0, 0, 0]
         
     return Response(None, version, status)
+
 
 def create_file(plc, entry):
     """
@@ -98,17 +100,18 @@ def create_file(plc, entry):
     data = [ord(c) for c in entry]
 
     request = pack('<BBHHBBHH{}B'.format(len(data)),
-                    cip_service,
-                    cip_service_size,
-                    cip_class_type,
-                    cip_class,
-                    cip_instance_type,
-                    cip_instance,
-                    0x00, 0x07c2,
-                    *data)
+                   cip_service,
+                   cip_service_size,
+                   cip_class_type,
+                   cip_class,
+                   cip_instance_type,
+                   cip_instance,
+                   0x00, 0x07c2,
+                   *data)
 
     status, ret_data = plc.conn.send(request, False)
     return Response(None, None, status)
+
 
 def delete_file(plc):
     """
@@ -128,15 +131,16 @@ def delete_file(plc):
     cip_instance = 0x01
 
     request = pack('<BBHHBB',
-                    cip_service,
-                    cip_service_size,
-                    cip_class_type,
-                    cip_class,
-                    cip_instance_type,
-                    cip_instance)
+                   cip_service,
+                   cip_service_size,
+                   cip_class_type,
+                   cip_class,
+                   cip_instance_type,
+                   cip_instance)
 
     status, ret_data = plc.conn.send(request, False)
     return Response(None, None, status)
+
 
 def get_med(plc):
     """
@@ -156,13 +160,13 @@ def get_med(plc):
     cip_instance = 0x01
 
     request = pack('<BBHHBBI',
-                    cip_service,
-                    cip_service_size,
-                    cip_class_type,
-                    cip_class,
-                    cip_instance_type,
-                    cip_instance,
-                    0x01)
+                   cip_service,
+                   cip_service_size,
+                   cip_class_type,
+                   cip_class,
+                   cip_instance_type,
+                   cip_instance,
+                   0x01)
 
     status, ret_data = plc.conn.send(request, False)
 
@@ -216,4 +220,3 @@ with pylogix.PLC("192.168.1.12") as comm:
     
     if response.Status == "Success":
         response = pv_test(comm, 0x50, 0x04fd, uninit_file)
-
